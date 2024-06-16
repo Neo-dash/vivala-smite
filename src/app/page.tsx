@@ -5,6 +5,7 @@ import { Authenticated, Unauthenticated, useMutation, useQueries, useQuery } fro
 import { Content } from "next/font/google";
 import { api } from "../../convex/_generated/api";
 import { title } from "process";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
 
@@ -21,11 +22,11 @@ export default function Home() {
       <Authenticated>
         <UserButton />
 
-        <button onClick={() => {
+        <Button onClick={() => {
           createDocument({title: 'hello world'})
 
 
-        }}> Click Me</button>
+        }}> Click Me</Button>
 
         {documents?.map((doc) => (
 
