@@ -6,6 +6,7 @@ import { Content } from "next/font/google";
 import { api } from "../../convex/_generated/api";
 import { title } from "process";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Home() {
 
@@ -21,6 +22,8 @@ export default function Home() {
       </Unauthenticated>
       <Authenticated>
         <UserButton />
+
+        <ModeToggle />
 
         <Button onClick={() => {
           createDocument({title: 'hello world'})
