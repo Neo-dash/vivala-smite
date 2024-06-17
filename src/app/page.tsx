@@ -7,6 +7,7 @@ import { api } from "../../convex/_generated/api";
 import { title } from "process";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { DocumentCard } from "./document-card";
 
 export default function Home() {
 
@@ -16,29 +17,28 @@ export default function Home() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Unauthenticated>
-        <SignInButton />
-      </Unauthenticated>
-      <Authenticated>
-        <UserButton />
+    <main className="p-24 space-y-8">
+      <div className="flex justify-between items-center">
 
-        <ModeToggle />
-
-        <Button onClick={() => {
-          createDocument({title: 'hello world'})
+      <h1 className="text-4xl font-bold">My Knowledge</h1>
+      <Button onClick={() => {
+        createDocument({ title: 'hello world' })
 
 
-        }}> Click Me</Button>
+      }}
+      >
+        Upload Document
 
-        {documents?.map((doc) => (
-
-          <div key={doc._id}>{doc.title}</div>
-        ))}
+      </Button>
+      </div>
 
 
 
-      </Authenticated>
+      <div className="grid grid-cols-4 gap-8">
+      {documents?.map((doc) => <DocumentCard
+
+        document={doc} />)}
+      </div>
     </main>
   );
 }
