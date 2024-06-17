@@ -1,12 +1,8 @@
 'use client'
 
-import { SignInButton, UserButton } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated, useMutation, useQueries, useQuery } from "convex/react";
-import { Content } from "next/font/google";
 import { api } from "../../convex/_generated/api";
-import { title } from "process";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { DocumentCard } from "./document-card";
 
 export default function Home() {
