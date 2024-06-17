@@ -13,22 +13,19 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import UploadDocumentForm from "./upload-document-form";
+import { useState } from "react";
 
 
 
 
 export default function CreateDocumentButton() {
 
-    const createDocument = useMutation(api.documents.createDocument);
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <Dialog>
-            <DialogTrigger asChild><Button onClick={() => {
-                createDocument({ title: 'hello world' })
-            }}
-            >
+        <Dialog onOpenChange={setIsOpen} open={isOpen}>
+            <DialogTrigger asChild><Button>
                 Upload Document
-
             </Button></DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -36,7 +33,7 @@ export default function CreateDocumentButton() {
                     <DialogDescription>
                         Upload a document for your clients to interact with ! 🚀
                     </DialogDescription>
-                    <UploadDocumentForm />
+                    <UploadDocumentForm onUpload={()=> setIsOpen(false)}/>
                 </DialogHeader>
             </DialogContent>
         </Dialog>

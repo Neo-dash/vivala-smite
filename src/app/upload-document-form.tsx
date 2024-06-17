@@ -6,15 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useMutation } from "convex/react"
+import { api } from "../../convex/_generated/api"
 
 
 const formSchema = z.object({
@@ -22,7 +24,13 @@ const formSchema = z.object({
 
 })
 
-export default function UploadDocumentForm() {
+export default function UploadDocumentForm({
+    onUpload,
+}: {
+    onUpload: () => void;
+}) {
+
+    const createDocument = useMutation(api.documents.createDocument);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -30,10 +38,10 @@ export default function UploadDocumentForm() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        await createDocument(values);
+        onUpload();
+
     }
 
     return (<Form {...form}>
