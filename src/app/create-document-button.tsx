@@ -12,6 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import UploadDocumentForm from "./upload-document-form";
 
 
 
@@ -35,6 +36,7 @@ export default function CreateDocumentButton() {
                     <DialogDescription>
                         Upload a document for your clients to interact with ! 🚀
                     </DialogDescription>
+                    <UploadDocumentForm />
                 </DialogHeader>
             </DialogContent>
         </Dialog>
