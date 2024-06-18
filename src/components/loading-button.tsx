@@ -13,7 +13,7 @@ export function LoadingButton({ isLoading, children, loadingText }:
     }) {
     return (<Button
         className="flex gap-2 items-center"
-        disable={"isLoading"}
+        disabled={isLoading}
         type="submit"
     >
         {isLoading && <Loader2 className="animate-spin" />}
