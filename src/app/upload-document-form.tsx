@@ -24,6 +24,7 @@ import { LoadingButton } from "@/components/loading-button"
 
 const formSchema = z.object({
     title: z.string().min(1).max(250),
+    file: z.instanceof(File),
 
 })
 
@@ -60,6 +61,19 @@ export default function UploadDocumentForm({
                         <FormLabel>Title</FormLabel>
                         <FormControl>
                             <Input placeholder="New Destination?" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name="file"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>File</FormLabel>
+                        <FormControl>
+                            <Input type="file"  />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
