@@ -3,8 +3,11 @@
 import { mutation , query} from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 
-export const getDocuments = query({
-    async handler(ctx){
+export const generateUploadUrl = mutation(async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  });
+
+export const getDocuments = query({ async handler(ctx){
 
         const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
 
@@ -22,7 +25,8 @@ export const getDocuments = query({
 
 export const createDocument = mutation({
     args:{
-        title: v.string()
+        title: v.string(),
+        fileId: v.string(),
     },
     async handler(ctx, args){
 
@@ -35,7 +39,8 @@ export const createDocument = mutation({
         }
         await ctx.db.insert('documents', {
             title: args.title,
-            tokenIdentifier: userId
+            tokenIdentifier: userId,
+            fileId: args.fileId,
         })
     },
 })

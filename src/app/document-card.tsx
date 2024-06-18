@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Doc } from "../../convex/_generated/dataModel"
 import { Button } from "@/components/ui/button";
+import { Gem, Pipette } from "lucide-react";
 
 
 export function DocumentCard({ document }: { document: Doc<"documents"> }) {
@@ -23,7 +24,9 @@ export function DocumentCard({ document }: { document: Doc<"documents"> }) {
                 <p>Card Content</p>
             </CardContent>
             <CardFooter>
-                <Button>View </Button>
+            <Button className="flex items-center gap-2">
+                <Gem color="#8756e1" className="w-6 h-6"/> View
+            </Button>
             </CardFooter>
         </Card>);
 }

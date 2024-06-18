@@ -3,7 +3,7 @@
 import { Authenticated, Unauthenticated, useMutation, useQueries, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { DocumentCard } from "./document-card";
-import CreateDocumentButton from "./create-document-button";
+import CreateDocumentButton from "./upload-document-button";
 
 export default function Home() {
   const documents = useQuery(api.documents.getDocuments);

@@ -35,6 +35,9 @@ export default function UploadDocumentForm({
 }) {
 
     const createDocument = useMutation(api.documents.createDocument);
+    const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
+
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -44,9 +47,20 @@ export default function UploadDocumentForm({
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
 
-        //Sleep 2 seconds 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await createDocument(values);
+        const url = await generateUploadUrl();
+        
+        
+        const result = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": values.file.type},
+            body: values.file,
+          });
+        const {storageId} = await result.json();
+        
+        await createDocument({
+            title: values.title,
+            fileId: storageId as string,
+        }); 
         onUpload();
 
     }
@@ -69,11 +83,19 @@ export default function UploadDocumentForm({
             <FormField
                 control={form.control}
                 name="file"
-                render={({ field }) => (
+                render={({ field: { value, onChange, ...fieldProps } }) => (
                     <FormItem>
                         <FormLabel>File</FormLabel>
                         <FormControl>
-                            <Input type="file"  />
+                            <Input
+                                {...fieldProps}
+                                type="file"
+                                accept=".txt,.xml,.doc"
+                                onChange={(event) => {
+                                    const file = event.target.files?.[0];
+                                    onChange(file);
+                                }}
+                            />
                         </FormControl>
                         <FormMessage />
                     </FormItem>

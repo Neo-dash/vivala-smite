@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import UploadDocumentForm from "./upload-document-form";
 import { useState } from "react";
+import { Pickaxe, Upload } from "lucide-react";
 
 
 
@@ -24,9 +25,11 @@ export default function CreateDocumentButton() {
 
     return (
         <Dialog onOpenChange={setIsOpen} open={isOpen}>
-            <DialogTrigger asChild><Button>
-                Upload Document
-            </Button></DialogTrigger>
+            <DialogTrigger asChild>
+                <Button className="flex items-center gap-2">
+                <Pickaxe color="#8756e1" className="w-6 h-6"/> Stack knowledge
+            </Button>
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Upload a Document</DialogTitle>
