@@ -17,6 +17,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { useMutation } from "convex/react"
 import { api } from "../../convex/_generated/api"
+import { Loader2 } from "lucide-react"
+import { resolve } from "path"
+import { LoadingButton } from "@/components/loading-button"
 
 
 const formSchema = z.object({
@@ -39,6 +42,9 @@ export default function UploadDocumentForm({
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+
+        //Sleep 2 seconds 
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         await createDocument(values);
         onUpload();
 
@@ -59,7 +65,12 @@ export default function UploadDocumentForm({
                     </FormItem>
                 )}
             />
-            <Button type="submit">Upload</Button>
+            <LoadingButton
+                isLoading={form.formState.isSubmitting}
+                loadingText="Uploading ..."
+            >
+                Upload
+            </LoadingButton>
         </form>
     </Form>)
 }
