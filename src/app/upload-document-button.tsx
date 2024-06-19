@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import UploadDocumentForm from "./upload-document-form";
 import { useState } from "react";
-import { Pickaxe, Upload } from "lucide-react";
+import { Pickaxe } from "lucide-react";
 
 
 

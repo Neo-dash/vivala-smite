@@ -1,19 +1,10 @@
-
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Doc } from "../../convex/_generated/dataModel"
+import { Doc } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
-import { Gem, Pipette } from "lucide-react";
-
+import { Eye } from "lucide-react";
+import Link from 'next/link';  // Correct import for Next.js Link
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 
 export function DocumentCard({ document }: { document: Doc<"documents"> }) {
-
     return (
         <Card>
             <CardHeader>
@@ -24,9 +15,12 @@ export function DocumentCard({ document }: { document: Doc<"documents"> }) {
                 <p>Card Content</p>
             </CardContent>
             <CardFooter>
-            <Button className="flex items-center gap-2">
-                <Gem color="#8756e1" className="w-6 h-6"/> View
-            </Button>
+                <Link href={`/documents/${document._id}`} passHref>
+                    <Button  variant="secondary" className="flex items-center gap-2">
+                        <Eye className="w-4 h-4" /> View
+                    </Button>
+                </Link>
             </CardFooter>
-        </Card>);
+        </Card>
+    );
 }
