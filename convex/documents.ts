@@ -65,7 +65,7 @@ export const createDocument = mutation({
     },
     async handler(ctx, args) {
 
-        const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
+        const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
 
         console.log(userId)
 
