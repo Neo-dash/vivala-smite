@@ -4,6 +4,7 @@ import { Eye } from "lucide-react";
 import Link from 'next/link';  // Correct import for Next.js Link
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 //comment
+//hey
 export function DocumentCard({ document }: { document: Doc<"documents"> }) {
     return (
         <Card>
