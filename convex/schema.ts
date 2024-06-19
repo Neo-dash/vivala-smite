@@ -8,3 +8,6 @@ export default defineSchema({
     tokenIdentifier: v.string(),
   }).index("by_tokenIdentifier", ["tokenIdentifier"]),
 });
+
+
+//test
