@@ -19,7 +19,7 @@ export default function DocumentPage({
             You Don't Have Access to View This Document
         </div>
     }
-    // Access properties from the document
+    // Access properties from the document ?
     return (
         <main className="p-24 space-y-8">
             <div className="flex justify-between items-center">
@@ -27,8 +27,10 @@ export default function DocumentPage({
 
             </div>
             <div className="flex gap-12">
-                <div className="bg-gray-900 p-4 rounded-sm flex-1">
-                    {document.documentUrl && <iframe src={document.documentUrl} />}
+                <div className="bg-gray-900 p-4 rounded-sm flex-1 h-[600px]">
+                    {document.documentUrl && <iframe 
+                    className="w-full h-full"
+                    src={document.documentUrl} />}
                 </div>
 
                 <div className="w-[300px] bg-gray-900"></div>
