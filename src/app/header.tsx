@@ -12,7 +12,7 @@ export function Header() {
         <div className="container mx-auto flex justify-between items-center">
             <div className="flex items-center gap-4">
                 <Image src="/logo.png" width={100} height={100} alt='An Image of Moria Gate' />
-                Moria
+                
             </div>
 
             <div className="flex gap-5 items-center">

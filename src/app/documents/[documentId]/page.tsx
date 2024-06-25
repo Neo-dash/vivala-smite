@@ -3,6 +3,7 @@
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
+import ChatPanel from "./chat-panel";
 
 
 
@@ -37,7 +38,7 @@ export default function DocumentPage({
                     src={document.documentUrl} />}
                 </div>
 
-                <div className="w-[300px] bg-gray-900"></div>
+                <ChatPanel documentId={document._id}/>
             </div>
         </main>
     );
