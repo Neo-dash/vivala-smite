@@ -23,7 +23,7 @@ export default function DocumentPage({
             You Don't Have Access to View This Document
         </div>
     }
-    // Access properties from the document ?
+    // Access properties from the document ? exit property now
     return (
         <main className="p-24 space-y-8">
             <div className="flex justify-between items-center">
