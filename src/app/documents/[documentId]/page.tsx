@@ -5,10 +5,6 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import ChatPanel from "./chat-panel";
 
-
-
-
-//this is a comment just to test some things with github  vblablal
 export default function DocumentPage({
     params,
 }: {
@@ -21,7 +17,7 @@ export default function DocumentPage({
 
     if (!document) {
         return <div>
-            You Don't Have Access to View This Document
+            You Don&apos;t Have Access to View This Document
         </div>
     }
     // Access properties from the document ? exit property now
@@ -29,7 +25,6 @@ export default function DocumentPage({
         <main className="p-24 space-y-8">
             <div className="flex justify-between items-center">
                 <h1 className="text-4xl font-bold">{document.title}</h1>
-
             </div>
             <div className="flex gap-12">
                 <div className="bg-gray-900 p-4 rounded-sm flex-1 h-[600px]">
@@ -37,7 +32,6 @@ export default function DocumentPage({
                     className="w-full h-full"
                     src={document.documentUrl} />}
                 </div>
-
                 <ChatPanel documentId={document._id}/>
             </div>
         </main>
