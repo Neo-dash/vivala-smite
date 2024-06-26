@@ -11,7 +11,7 @@ import { api } from "./_generated/api";
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
+    apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
 });
 
 
@@ -117,7 +117,7 @@ export const askQuestion = action({
         const document = await ctx.runQuery(api.documents.getDocument, {
             documentId: args.documentId,
         })
-    
+
         if (!document) {
             throw new ConvexError("document not found");
         }
@@ -127,15 +127,28 @@ export const askQuestion = action({
         if (!file) {
             throw new ConvexError("file not found");
         }
+        const text = await file.text();
+        const chatCompletion: OpenAI.Chat.Completions.ChatCompletion =
+            await openai.chat.completions.create({
+                messages: [
+                    {
+                        role: "system",
+                        content: `Here is a text file: ${text}`,
+                    },
+                    {
+                        role: "user",
+                        content: `please answer this question: ${args.question}`,
+                    },
+                ],
 
-        const chatCompletion = await openai.chat.completions.create({
-            messages: [{role: "user", content: "say: this a test"}],
-            model: "gpt-3.5-turbo",
-        });
+                model: "gpt-3.5-turbo",
 
-        return chatCompletion;
+            });
+
+        console.log(chatCompletion.choices[0].message.content);
+        return chatCompletion.choices[0].message.content;
 
     },
 
 
-});
+})

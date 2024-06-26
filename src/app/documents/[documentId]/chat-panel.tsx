@@ -18,7 +18,7 @@ export default function ChatPanel({
 
     const askQuestion = useAction(api.documents.askQuestion);
     return (
-        <div className="w-[300px] bg-gray-900 flex flex-col gap-2 p-2">
+        <div className="w-[300px] bg-gray-900 flex flex-col gap-2 p-1">
             <div className=" h-[350px] overflow-y-auto">
 
                 <div className="p-4 bg-gray-800">Hello</div>
