@@ -76,7 +76,7 @@ export default function UploadDocumentForm({
                         <FormItem>
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="Expense Report" {...field} />
+                                <Input placeholder="B2B Document Name" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

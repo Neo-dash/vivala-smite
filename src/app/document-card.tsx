@@ -13,7 +13,7 @@ export function DocumentCard({ document }: { document: Doc<"documents"> }) {
                 <CardDescription></CardDescription>
             </CardHeader>
             <CardContent>
-                <p>Card Content</p>
+                <p>Click to See Description</p>
             </CardContent>
             <CardFooter>
                 <Link href={`/documents/${document._id}`} passHref>

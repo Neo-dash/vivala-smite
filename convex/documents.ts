@@ -1,21 +1,51 @@
 
 
-import { action, mutation, query } from "./_generated/server";
+import { MutationCtx, QueryCtx, action, internalQuery, mutation, query } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 
 
 
 
 import OpenAI from 'openai';
+import { Id } from "./_generated/dataModel";
 
 const openai = new OpenAI({
     apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
 });
 
+export const hasAccessToDocumentQuery = internalQuery({
+    args: {
+        documentId: v.id("documents"),
+    },
+    async handler(ctx, args) {
+        return await hasAccessToDocument(ctx, args.documentId)
+    },
+})
 
+export async function hasAccessToDocument(
 
+    ctx: MutationCtx | QueryCtx,
+    documentId: Id<"documents">
+) {
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
+
+    if (!userId) {
+        return null;
+
+    }
+    const document = await ctx.db.get(documentId);
+
+    if (!document) {
+        return null;
+    }
+    if (document.tokenIdentifier != userId) {
+        //throw new ConvexError('Not Authorized')
+        return null;
+    }
+    return {document,userId};
+}
 
 
 export const generateUploadUrl = mutation(async (ctx) => {
@@ -32,12 +62,13 @@ export const getDocuments = query({
 
         }
 
-        return await ctx.db.query('documents')
-            .withIndex('by_tokenIdentifier', (q) => q.eq('tokenIdentifier',
-                userId
-            )).collect()
+        return await ctx.db
+            .query('documents')
+            .withIndex('by_tokenIdentifier', (q) => q.eq('tokenIdentifier', userId))
+            .collect()
     },
 })
+
 
 
 export const getDocument = query({
@@ -48,26 +79,17 @@ export const getDocument = query({
     },
 
     async handler(ctx, args) {
+        const accessObj = await hasAccessToDocument(ctx, args.documentId);
 
-        const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
 
-        if (!userId) {
-            return null;
-
-        }
-        const document = await ctx.db.get(args.documentId)
-
-        if (!document) {
+        if (!accessObj) {
             return null;
         }
 
-        if (document.tokenIdentifier != userId) {
-            //throw new ConvexError('Not Authorized')
-            return null;
-        }
 
         return {
-            ...document, documentUrl: await ctx.storage.getUrl(document.fileId),
+            ...accessObj.document,
+            documentUrl: await ctx.storage.getUrl(accessObj.document.fileId),
         };
 
     },
@@ -93,36 +115,24 @@ export const createDocument = mutation({
             fileId: args.fileId,
         })
     },
-
-
-
 })
 
 export const askQuestion = action({
     args: {
         question: v.string(),
         documentId: v.id("documents"),
-
     },
 
     async handler(ctx, args) {
-
-        const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
-
-        console.log(userId)
-
-        if (!userId) {
-            throw new ConvexError('Not Authenticated')
-        }
-        const document = await ctx.runQuery(api.documents.getDocument, {
+        const accessObj = await ctx.runQuery(internal.documents.hasAccessToDocumentQuery, {
             documentId: args.documentId,
-        })
+        });
 
-        if (!document) {
-            throw new ConvexError("document not found");
+        if (!accessObj) {
+            throw new ConvexError("You do do not have access to this document");
         }
 
-        const file = await ctx.storage.get(document.fileId);
+        const file = await ctx.storage.get(accessObj.document.fileId);
 
         if (!file) {
             throw new ConvexError("file not found");
@@ -145,10 +155,28 @@ export const askQuestion = action({
 
             });
 
-        console.log(chatCompletion.choices[0].message.content);
-        return chatCompletion.choices[0].message.content;
+        await ctx.runMutation(internal.chats.createChatRecord, {
+
+            documentId: args.documentId,
+            text: args.question,
+            isHuman: true,
+            tokenIdentifier: accessObj.userId,
+        });
+
+        const response = chatCompletion.choices[0].message.content ?? 'could not generate a response';
+
+        await ctx.runMutation(internal.chats.createChatRecord, {
+
+            documentId: args.documentId,
+            text: response,
+            isHuman: false,
+            tokenIdentifier: accessObj.userId,
+        });
+
+
+        return response;
 
     },
 
 
-})
+});
